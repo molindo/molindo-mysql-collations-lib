@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>at.molindo</groupId>
+		<artifactId>molindo-oss-pom</artifactId>
+		<version>1</version>
+	</parent>
+
+	<groupId>at.molindo</groupId>
+	<artifactId>molindo-mysql-collations-lib</artifactId>
+	<version>0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>Molindo MySQL Compare</name>
+	<description>
+	  Java collations using MySQL code for collation comparison
+	</description>
+	<url>http://github.com/molindo/molindo-mysql-collations-lib</url>
+
+	<scm>
+		<connection>scm:git:git@github.com:molindo/molindo-mysql-collations-lib.git</connection>
+		<developerConnection>scm:git:git@github.com:molindo/molindo-mysql-collations-lib.git</developerConnection>
+		<url>git@github.com:molindo/molindo-mysql-collations-lib.git</url>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<dependencies>
+		<dependency>
+			<groupId>at.molindo</groupId>
+			<artifactId>molindo-utils</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+</project>
