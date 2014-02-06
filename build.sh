@@ -20,7 +20,7 @@
 #
 
 LIB_SRC_HOME=$PWD/src/main/c
-MYSQL_SRC_HOME=$HOME/Desktop/mysql-strings/mysql-5.5.28
+MYSQL_SRC_HOME=$HOME/Desktop/mysql-5.5.36
 JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:bin/javac::")
 
 OBJ=/tmp/libCollationCompare.c.o
