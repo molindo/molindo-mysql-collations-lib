@@ -59,7 +59,7 @@ echo "building $LIB"
 #  -fPIC -shared \
 #  -o $LIB \
 #  -lpthread ../mysys/libmysys.a ../dbug/libdbug.a ../mysys/libmysys.a ../dbug/libdbug.a ../strings/libstrings.a -lm -lrt -lpthread 
-gcc -fPIC -Wall -Wall -Wextra -Wunused -Wwrite-strings -Wno-strict-aliasing -Werror -Wdeclaration-after-statement `mysql_config --libs` $OBJ -shared -o $LIB 
+gcc -fPIC -Wall -Wall -Wextra -Wunused -Wwrite-strings -Wno-strict-aliasing -Werror -Wdeclaration-after-statement `mysql_config --libs` $OBJ -shared -o $LIB -lmysqlclient
 
 #cd $LIB_SRC_HOME/../../..
 echo "done"
