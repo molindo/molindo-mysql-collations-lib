@@ -24,13 +24,14 @@ import java.io.OutputStream;
 import java.util.Comparator;
 
 import at.molindo.utils.io.StreamUtils;
+import at.molindo.utils.properties.SystemProperty;
 
 final class CollationCompare {
 
 	static {
-		String dirName = System.getProperty(CollationComparator.PROP_LIB_COLLATION_COMPARE_DIR, ".");
-		String fileName = System.getProperty(CollationComparator.PROP_LIB_COLLATION_COMPARE_NAME,
-				"libCollationCompare.so");
+		String dirName = System.getProperty(Collation.PROP_LIB_COLLATION_COMPARE_DIR, ".");
+		String fileName = System.getProperty(Collation.PROP_LIB_COLLATION_COMPARE_NAME, "libCollationCompare."
+				+ SystemProperty.OS_ARCH + ".so");
 
 		File dir = new File(dirName);
 		if (!dir.isDirectory()) {
@@ -59,10 +60,10 @@ final class CollationCompare {
 		}
 
 		Runtime.getRuntime().load(file.getAbsolutePath());
-		System.setProperty(CollationComparator.PROP_LIB_COLLATION_COMPARE_LOADED, file.getAbsolutePath());
+		System.setProperty(Collation.PROP_LIB_COLLATION_COMPARE_LOADED, file.getAbsolutePath());
 
-		// TODO should be in memory and safe to delete immediately
-		file.deleteOnExit();
+		// in memory and safe to delete immediately
+		file.delete();
 	}
 
 	private CollationCompare() {
@@ -75,11 +76,22 @@ final class CollationCompare {
 	 */
 	static native int index(String collation);
 
+	// /**
+	// * @return one of {-1,0,1} for comparison, something else in case of error
+	// *
+	// * @see Comparator#compare(Object, Object)
+	// *
+	// * @deprecated use {@link String#getBytes(java.nio.charset.Charset)} to
+	// * convert Strings to correct byte representation
+	// */
+	// @Deprecated
+	// static native int compare(int idx, String a, String b);
+
 	/**
 	 * @return one of {-1,0,1} for comparison, something else in case of error
 	 * 
 	 * @see Comparator#compare(Object, Object)
 	 */
-	static native int compare(int idx, String a, String b);
+	static native int compareBytes(int idx, byte[] a, byte[] b);
 
 }

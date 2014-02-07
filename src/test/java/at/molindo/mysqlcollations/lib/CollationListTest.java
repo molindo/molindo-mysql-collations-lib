@@ -15,22 +15,27 @@
  */
 package at.molindo.mysqlcollations.lib;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Iterator;
+
 import org.junit.Test;
 
-public class CollationComparatorTest {
+public class CollationListTest {
 
 	@Test
-	public void test() {
-		for (int i = 1; i < 256; i++) {
-			try {
-				System.out.println(i + ": " + CollationComparator.comparator(i).compare("foo", "bar"));
-			} catch (IllegalArgumentException e) {
-				System.out.println(i + " unknown");
-			}
-		}
+	public void testIterator() {
+		Iterator<Collation> iter = CollationList.iterator();
+		while (iter.hasNext()) {
+			Collation collation = iter.next();
+			assertNotNull(collation);
 
-		for (String collation : new String[] { "utf8_unicode_ci" }) {
-			System.out.println(collation + ": " + CollationComparator.comparator(collation).compare("Foobar", "foo"));
+			int index = CollationCompare.index(collation.getName());
+			assertTrue(index > 0);
+
+			assertSame(collation, CollationList.collation(index));
 		}
 	}
 }

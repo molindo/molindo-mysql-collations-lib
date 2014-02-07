@@ -32,11 +32,11 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_inde
 
 /*
  * Class:     at_molindo_mysqlcollations_lib_CollationCompare
- * Method:    compare
- * Signature: (ILjava/lang/String;Ljava/lang/String;)I
+ * Method:    compareBytes
+ * Signature: (I[B[B)I
  */
-JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_compare
-  (JNIEnv *, jclass, jint, jstring, jstring);
+JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_compareBytes
+  (JNIEnv *, jclass, jint, jbyteArray, jbyteArray);
 
 #ifdef __cplusplus
 }

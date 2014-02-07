@@ -20,11 +20,14 @@
 #include <my_global.h>
 #include <m_ctype.h>
 #include <my_sys.h>
+#include <m_string.h>
 
 #include "at_molindo_mysqlcollations_lib_CollationCompare.h"
 
+/*
 #include <string.h>
 #include <stdio.h>
+*/
 
 #define UNUSED(x) (void)(x)
 
@@ -40,7 +43,7 @@ static uint collation_index(const char *name)
   return get_collation_number(name);
 }
 
-static int compare(uint cs_number, const uchar *a, const uchar *b)
+static int compare(uint cs_number, const uchar *a, uint length_a, const uchar *b, uint length_b)
 {
   CHARSET_INFO* cs;
   int cmp;
@@ -48,7 +51,7 @@ static int compare(uint cs_number, const uchar *a, const uchar *b)
   if (!(cs= get_charset(cs_number, MYF(0))))
     return 2;
 
-  cmp = cs->coll->strnncollsp(cs, a, strlen((char*) a), b, strlen((char*) b), FALSE);
+  cmp = cs->coll->strnncollsp(cs, a, length_a, b, length_b, FALSE);
   if (cmp < 0) return -1;
   else if (cmp > 0) return 1;
   else return 0;
@@ -81,18 +84,52 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_comp
   const char *a;
   const char *b;
 
+  jsize a_length, b_length;
+
   UNUSED(obj);
 
   idx = (uint) jidx;
   a = (*env)->GetStringUTFChars(env, ja, 0);
   b = (*env)->GetStringUTFChars(env, jb, 0);
 
-  cmp = compare(idx, (uchar*) a, (uchar*) b);
+  a_length = (*env)->GetStringUTFLength(env, ja);
+  b_length = (*env)->GetStringUTFLength(env, jb);
+
+  cmp = compare(idx, (uchar*) a, a_length, (uchar*) b, b_length);
 
   (*env)->ReleaseStringUTFChars(env, ja, a);
   (*env)->ReleaseStringUTFChars(env, jb, b);
 
   return cmp;
+}
+
+JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_compareBytes
+  (JNIEnv *env, jclass obj, jint jidx, jbyteArray ja, jbyteArray jb) {
+
+  uint idx;
+  int cmp;
+
+  jbyte *a, *b;
+
+  jsize a_length, b_length;
+
+  UNUSED(obj);
+
+  idx = (uint) jidx;
+  a = (*env)->GetByteArrayElements(env, ja, 0);
+  b = (*env)->GetByteArrayElements(env, jb, 0);
+
+  a_length = (*env)->GetArrayLength(env, ja);
+  b_length = (*env)->GetArrayLength(env, jb);
+
+  cmp = compare(idx, (uchar*) a, a_length, (uchar*) b, b_length);
+
+  (*env)->ReleaseByteArrayElements(env, ja, a, JNI_ABORT);
+  (*env)->ReleaseByteArrayElements(env, jb, b, JNI_ABORT);
+
+  return cmp;
+
+  return 0;
 }
 
 /*
