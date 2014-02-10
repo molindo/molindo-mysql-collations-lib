@@ -30,14 +30,14 @@ import at.molindo.utils.collections.CollectionUtils;
 import at.molindo.utils.collections.IteratorUtils;
 import at.molindo.utils.data.Function;
 
-public class CollationList {
+class CollationList {
 
 	private static final Logger log = LoggerFactory.getLogger(CollationList.class);
 
 	private static final String COLLATION_PROPERTIES_FILE = "/collations.properties";
 
 	private static final List<Collation> COLLATIONS;
-	public static final int MAX_INDEX;
+	static final int MAX_INDEX;
 
 	static {
 		try {
