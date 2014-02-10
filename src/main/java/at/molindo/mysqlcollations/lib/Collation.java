@@ -103,6 +103,8 @@ public class Collation implements Comparator<String> {
 	private final String _name;
 	private final Charset _charset;
 
+	private final Comparator<byte[]> _bytes;
+
 	Collation(int idx, String name) {
 		if (idx <= 0) {
 			throw new IllegalArgumentException("idx <= 0 (" + idx + ")");
@@ -111,6 +113,22 @@ public class Collation implements Comparator<String> {
 		_index = idx;
 		_name = name;
 		_charset = charset(name);
+
+		_bytes = new Comparator<byte[]>() {
+
+			@Override
+			public int compare(byte[] o1, byte[] o2) {
+				return compare(o1, o2);
+			}
+		};
+	}
+
+	/**
+	 * @return a {@link Comparator} for byte[]
+	 */
+	public Comparator<byte[]> bytes() {
+		return _bytes;
+
 	}
 
 	public int getIndex() {
@@ -126,23 +144,40 @@ public class Collation implements Comparator<String> {
 	}
 
 	/**
+	 * @throws IllegalStateException
+	 *             if collation has no mapped Java {@link Charset}
+	 * 
 	 * @throws IllegalArgumentException
 	 *             if Strings can't be compared with this collation index
 	 */
 	@Override
-	public int compare(String o1, String o2) {
+	public int compare(String o1, String o2) throws IllegalArgumentException, IllegalStateException {
 		if (_charset == null) {
-			throw new IllegalStateException("can't compare collation without mapped Java charset: " + _name);
-			// cmp = CollationCompare.compare(_index, o1, o2);
+			throw new IllegalStateException("can't compare strings without mapped Java charset: " + _name);
 		}
 
-		int cmp = CollationCompare.compareBytes(_index, o1.getBytes(_charset), o2.getBytes(_charset));
+		try {
+			return compare(o1.getBytes(_charset), o2.getBytes(_charset));
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("can't compare strings '" + o1 + "' and '" + o2 + "'", e);
+		}
+	}
 
-		if (cmp < -1 || cmp > 1) {
-			throw new IllegalArgumentException("can't compare strings '" + o1 + "' and '" + o2 + "' using collation#"
-					+ _index + " (" + cmp + ")");
+	/**
+	 * @throws IllegalArgumentException
+	 *             if Strings can't be compared with this collation index
+	 */
+	public int compare(byte[] o1, byte[] o2) throws IllegalArgumentException {
+		int cmp = CollationCompare.compareBytes(_index, o1, o2);
+
+		if (error(cmp)) {
+			throw new IllegalArgumentException("can't compare byte arrays using collation#" + _index + " (" + cmp + ")");
 		} else {
 			return cmp;
 		}
+	}
+
+	private boolean error(int cmp) {
+		return cmp < -1 || cmp > 1;
 	}
 }
