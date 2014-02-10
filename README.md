@@ -23,3 +23,10 @@ Maven:
       <version>0.1.0</version>
     </dependency>
 
+Release available from Maven Central, snapshots from [oss.sonatype.org](https://oss.sonatype.org/index.html#nexus-search;gav~at.molindo~molindo-mysql-collations-lib~~jar~).
+
+CI Build:
+---------
+
+[![Build Status](https://travis-ci.org/molindo/molindo-mysql-collations-lib.png?branch=master)](https://travis-ci.org/molindo/molindo-mysql-collations-lib)
+
