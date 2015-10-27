@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /*
- * 
+ * see https://dev.mysql.com/doc/internals/en/charsets.html
  */
 
 #include <my_global.h>
@@ -24,19 +25,7 @@
 
 #include "at_molindo_mysqlcollations_lib_CollationCompare.h"
 
-/*
-#include <string.h>
-#include <stdio.h>
-*/
-
-#define UNUSED(x) (void)(x)
-
-/*
-static void init(void)
-{
-  get_charset_by_name("",MYF(0)); // To execute init_available_charsets
-}
-*/
+#define NOTUSED(x) (void)(x)
 
 static uint collation_index(const char *name)
 {
@@ -64,7 +53,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_inde
   const char *name;
   int index;
 
-  UNUSED(obj);
+  NOTUSED(obj);
 
   name = (*env)->GetStringUTFChars(env, jname, 0);
 
@@ -77,7 +66,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_inde
 
 JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_compare
     (JNIEnv *env, jobject obj, jint jidx, jstring ja, jstring jb) {
-  
+
   uint idx;
   int cmp;
 
@@ -86,7 +75,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_comp
 
   jsize a_length, b_length;
 
-  UNUSED(obj);
+  NOTUSED(obj);
 
   idx = (uint) jidx;
   a = (*env)->GetStringUTFChars(env, ja, 0);
@@ -113,7 +102,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_comp
 
   jsize a_length, b_length;
 
-  UNUSED(obj);
+  NOTUSED(obj);
 
   idx = (uint) jidx;
   a = (*env)->GetByteArrayElements(env, ja, 0);
@@ -132,54 +121,4 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_comp
   return 0;
 }
 
-/*
-int main(int argc, char** argv) {
-
-  if (argc == 1) {
-    int i;
-
-    printf("printing charsets (%d):\n", MY_ALL_CHARSETS_SIZE);
-    for (i=0;i<MY_ALL_CHARSETS_SIZE;i++)
-    {
-      CHARSET_INFO* cs;
-
-      if ((cs = get_charset(i, MYF(0))))
-        printf("collation#%d %s\n", i, cs->name);
-    }
-    return 1;
-  }
-  else if (argc == 2) {
-        int idx = atoi(argv[1]);
-        init();
-        if (all_charsets[idx] != NULL)
-        {
-            printf("collation#%d %s\n", idx, all_charsets[idx]->name);
-            return 0;
-        }
-        else 
-        {
-            printf("unknown charset#%d\n", idx);
-            return 1;
-        }
-    }
-    else if (argc != 4) {
-        printf("expecting 3 arguments\n");
-        return 1;
-    } else {
-        int idx, cmp;
-
-        const char* name = argv[1];
-        const char* a = argv[2];
-        const char* b = argv[3];
-
-        idx = collation_index(name);
-
-        printf("compare(%d, '%s', '%s')\n", idx, a, b);
-        cmp = compare(idx, (uchar*) a, (uchar*) b);
-        printf("%d\n", cmp);
-
-        return 0;
-    }
-}
-*/
 
