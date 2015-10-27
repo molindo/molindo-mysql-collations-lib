@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /*
- * 
+ * see https://dev.mysql.com/doc/internals/en/charsets.html
  */
 
 #include <my_global.h>
@@ -77,7 +78,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_inde
 
 JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_compare
     (JNIEnv *env, jobject obj, jint jidx, jstring ja, jstring jb) {
-  
+
   uint idx;
   int cmp;
 
@@ -156,7 +157,7 @@ int main(int argc, char** argv) {
             printf("collation#%d %s\n", idx, all_charsets[idx]->name);
             return 0;
         }
-        else 
+        else
         {
             printf("unknown charset#%d\n", idx);
             return 1;
