@@ -29,7 +29,7 @@
 #include <stdio.h>
 */
 
-#define UNUSED(x) (void)(x)
+#define NOTUSED(x) (void)(x)
 
 /*
 static void init(void)
@@ -64,7 +64,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_inde
   const char *name;
   int index;
 
-  UNUSED(obj);
+  NOTUSED(obj);
 
   name = (*env)->GetStringUTFChars(env, jname, 0);
 
@@ -86,7 +86,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_comp
 
   jsize a_length, b_length;
 
-  UNUSED(obj);
+  NOTUSED(obj);
 
   idx = (uint) jidx;
   a = (*env)->GetStringUTFChars(env, ja, 0);
@@ -113,7 +113,7 @@ JNIEXPORT jint JNICALL Java_at_molindo_mysqlcollations_lib_CollationCompare_comp
 
   jsize a_length, b_length;
 
-  UNUSED(obj);
+  NOTUSED(obj);
 
   idx = (uint) jidx;
   a = (*env)->GetByteArrayElements(env, ja, 0);
